@@ -1,3 +1,12 @@
+
+/* This is needed for the textbox decorator */
+* {
+	margin: 0;
+	padding: 0px;
+}
+
+
+
 body{
     background-color: #111111;
     color: #dddddd;
@@ -7,8 +16,6 @@ body{
     background-color: #111111;
     float: left;
     
-    
- 
 }
 
 input{
@@ -18,11 +25,7 @@ input{
     border-color: #444444;
 }
 
-button{
 
-    
-    
-}
 
 textarea {
     resize: none;
@@ -35,6 +38,32 @@ textarea {
     margin: 0px;
     padding: 0px;
     text-align: left;
+    border: solid 1px white;
+  
     
 }
 
+
+            .ldt .red { color: red; }
+			.ldt .orange { color: orange; }
+			.ldt .yellow { color: yellow; }
+			.ldt .green { color: green; }
+			.ldt .blue { color: blue; }
+            .ldt .violet { color: violet; }
+            .ldt .other {color: white;}
+
+			/* editor styles */
+			.ldt {
+				position: absolute;
+				background: #333333;
+				width: 262px;
+                
+				height: 300px;
+				 margin: 0;
+				border: 1px solid white;
+            }
+            
+			/* styles applied to comment tokens */
+			.ldt .comment {
+				color: silver;
+			}
