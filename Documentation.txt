@@ -45,3 +45,6 @@ Peter Higs Version adds:
 
 --add method to make output easier
 
+926 Vgf VideoGraphics 8 memory locations contain a 0-255 byte of data
+    8 locations will give an 8*8 array
+

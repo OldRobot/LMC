@@ -13,9 +13,15 @@ body{
 }
 
 #lmc{
+    position: absolute;
     background-color: #111111;
     float: left;
     
+}
+
+#title{
+    background-color: #cccccc;
+    color: black;
 }
 
 input{
@@ -39,9 +45,22 @@ textarea {
     padding: 0px;
     text-align: left;
     border: solid 1px white;
-  
     
 }
+
+#codewindows{
+    position: absolute;
+    top: 30px;
+    left:100px;
+    border: 1px solid gray;
+}
+
+
+
+
+
+
+/* this needs moving to the LDT stylesheet */
 
 
             .ldt .red { color: red; }
@@ -50,6 +69,7 @@ textarea {
 			.ldt .green { color: green; }
 			.ldt .blue { color: blue; }
             .ldt .violet { color: violet; }
+            
             .ldt .other {color: white;}
 
 			/* editor styles */

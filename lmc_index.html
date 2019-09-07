@@ -14,22 +14,30 @@
 <body>
 
 
-<div id="codewindows">
+
     <div id="lmc">
-     LMC 1
-        <br>
+      <div id="title">LMC 1</div>
+      <!---
+      https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_draggable
+     
+      -->
     
     <!--- LMC 1   -------------------------------------------->
-    <textarea id="code1" class="input">
+      <!-- onkeypress="process(event, this)"-->
+    
+    <textarea id="code1" class="input"  onkeypress="process(event, this)">
       LDA TWENTY
       LOOP SUB ONE
       BRZ STOP
+      OUT
       BRA LOOP
       STOP OUT
       HLT
-      ONE     DAT 001
-      TWENTY  DAT 010
+      ONE DAT 001
+      TWENTY DAT 010
     </textarea>
+
+ 
 
       <br>
       <button type="button" name="button" onclick="reset1()"> compile and run</button>
@@ -44,10 +52,10 @@
 <p id="cir1">CIR:</p>
 <p id="idel1">Idel: 100%</p>
      </div>
-   </div>
+
 
    <!--- LMC 2  -------------------------------------------->
-<div id="lmc">
+<!-- <div id="lmc">
     LMC 2
     <br>
 <textarea id="code2" rows="30" cols="70">
@@ -75,31 +83,77 @@ Out:<input id="output2" type="text">
 <p id="idel2">Idel: 100%</p>
 </div>
 </div>
-<br>
+<br> -->
 
 
 
   <script type="text/javascript">
 
+dragElement(document.getElementById("lmc"));
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
 //LMC 1
 function reset1(){
+  stipStartSpaces("code1");
+  //document.getElementById("code1").click;
+  decorator.update();
+  
   let str = document.getElementById("code1").value;
   let code =(assemeble(str, false));
   console.clear();
   console.log(code);
   lmc1 = new LMC(code,false,100,1);
-  lmc1.setOutput("input2")
+  lmc1.setOutput("output1")
   lmc1.run();
 }
 
-//LMC 2
-function reset2(){
-  let str = document.getElementById("code2").value;
-  let code =(assemeble(str, false));
-  console.clear();
-  lmc2 = new LMC(code,false,100,2);
-  lmc2.run();
-}
+// //LMC 2
+// function reset2(){
+//   let str = document.getElementById("code2").value;
+//   let code =(assemeble(str, false));
+//   console.clear();
+//   lmc2 = new LMC(code,false,100,2);
+//   lmc2.run();
+// }
 
 //code for the text decorator
 var complied_code = [];
@@ -109,23 +163,27 @@ var complied_code = [];
 			// create the parser, case insensitive
 			var parser = new Parser({
 				whitespace: /\s+/,
-				green: /start:|START:|end:|END:|loop:|LOOP:/,
-				red: /add|ADD|sub|SUB|sta\w|STA|lda|LDA|bra|BRA|brz|BRZ|brp|BRP|inp|INP|out|OUT|htl|HTL|cob|COB|dat|DAT/,						
+				green: /start|START|end|END|loop|LOOP|STOP|stop|ONE|one|TEN|ten|ZERO|zero/,
+				red: /add\b|ADD\b|sub\b|SUB\b|sta\b|STA\b|lda\b|LDA\b|bra\b|BRA\b|brz\b|BRZ\b|brp\b|BRP\b|inp\b|INP\b|out\b|OUT\b|htl\b|HLT\b|cob\b|COB\b|dat\b|DAT\b/,						
 				blue: /0x[\dA-Fa-f]+|-?(\d+\.?\d*|\.\d+)/,
-				indigo: /indigo/,
+        violet: /Paul/,
 				comment: /\/\*([^\*]|\*[^\/])*(\*\/?)?|(\/\/|#)[^\r\n]*/,
-				other: /\S+/ }, true );
-			// wait for the page to finish loading before accessing the DOM
+        other: /\S+/ }, true );
+        
+
+
+      // wait for the page to finish loading before accessing the DOM
 			window.onload = function(){
 				// get the textarea
+        stipStartSpaces('code1');
 				var textarea = $('code1');
 				// start the decorator
 				decorator = new TextareaDecorator( textarea, parser );
 
 				//get an array of the chars
-        var textarea2 = $('code2');
+        //var textarea2 = $('code2');
 				// start the decorator
-				decorator = new TextareaDecorator( textarea2, parser );
+				//decorator = new TextareaDecorator( textarea2, parser );
 
 			};
 
@@ -133,6 +191,105 @@ var complied_code = [];
 
 //end of code for the text decorator
 
+
+//these functions will perform cleanup opperations on the code window text content
+//they may also add tabs
+
+function stipStartSpaces(id){
+
+  console.log(document.getElementById("code1").value);
+
+  //grab the textarea contents and split into array
+  let str = document.getElementById("code1").value.split(String.fromCharCode(10));
+  
+  //console.log("Input:")
+  //console.log(str);
+
+  //remove whitespace before and after string content
+  for(var n=0;n<str.length;n++){
+    str[n]=str[n].trim();
+    str[n]=str[n].replace(String.fromCharCode(9)," ");
+
+    if (match(str[n])){
+      str[n]=String.fromCharCode(9)+str[n]
+    }else{
+      str[n] = matchLabel(str[n]);
+    };
+    
+    //if (str[n]=='HLT'){str[n]=String.fromCharCode(9)+str[n]}
+  }
+
+  //console.log(str[0].charCodeAt(10)); //Line feed
+
+
+  //assemble final output
+  var output="";
+  for(var n=0;n<str.length;n++){
+   // if(str[n]!=""){
+    output+=str[n]+String.fromCharCode(10);
+    //}
+  }
+
+  document.getElementById("code1").value = output;
+  console.log(str);
+}
+
+//this function will tabulate the LMC commands without any starting lable
+function match(st){
+  st = st.substring(0, 3);
+
+  switch (st) {
+    case 'HLT':
+      return true;
+      break;
+    case 'BRA':
+      return true;
+      break;
+    case 'BRZ':
+      return true;
+      break;
+    case 'LDA':
+      return true;
+      break;
+    case 'OUT':
+      return true;
+      break;
+  
+  
+    default:
+      break;
+  }
+}
+
+//this function will tabulate a command after a label
+function matchLabel(st){
+  reg = {r: /OUT|DAT|SUB|LDA|BRZ|BRA|ADD|HLT/i};
+
+  //var n = st.search("OUT");
+  var n = st.search(reg.r);
+  if(n>0){
+    console.log(n);
+    var command = st.substring(n, n+3);
+    var array = st.split(" ");
+    console.log(array);
+    st = array[0]+String.fromCharCode(9)+command+(array[2]!=undefined?" " + array[2]:"");
+    console.log( st);
+    
+  }
+
+  return st;
+
+  
+}
+
+function process(e,text) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if (code == 13) { //Enter keycode
+      
+     // console.log(document.getElementById("code1").value);
+     // stipStartSpaces('code1');
+    }
+}
 
 
   </script>
