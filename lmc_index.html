@@ -11,32 +11,25 @@
   <script type="text/javascript" src="LMC.JS" charset="utf-8"></script>
 </head>
 
-<body backgroundColor="#DDDDDD">
+<body>
 
 
-  
-      
 <div id="codewindows">
     <div id="lmc">
-        LMC 1
+     LMC 1
         <br>
     
+    <!--- LMC 1   -------------------------------------------->
     <textarea id="code1" class="input">
       LDA TWENTY
       LOOP SUB ONE
-      SUB ONE
-      OUT
       BRZ STOP
       BRA LOOP
-      STOP HLT
+      STOP OUT
+      HLT
       ONE     DAT 001
-      TWENTY  DAT 020
+      TWENTY  DAT 010
     </textarea>
-    
-   
-   
-
-
 
       <br>
       <button type="button" name="button" onclick="reset1()"> compile and run</button>
@@ -51,13 +44,14 @@
 <p id="cir1">CIR:</p>
 <p id="idel1">Idel: 100%</p>
      </div>
-     
    </div>
 
+   <!--- LMC 2  -------------------------------------------->
 <div id="lmc">
     LMC 2
     <br>
 <textarea id="code2" rows="30" cols="70">
+  INP
   LDA TWENTY
   LOOP SUB ONE
   SUB ONE
@@ -68,6 +62,7 @@
   ONE     DAT 001
   TWENTY  DAT 020
 </textarea>
+
 <br>
 <button type="button" name="button" onclick="reset2()"> compile and run</button>
 <br>
@@ -84,24 +79,20 @@ Out:<input id="output2" type="text">
 
 
 
-
-
-
   <script type="text/javascript">
 
-//these are for just 1 computer
-
+//LMC 1
 function reset1(){
   let str = document.getElementById("code1").value;
   let code =(assemeble(str, false));
   console.clear();
   console.log(code);
   lmc1 = new LMC(code,false,100,1);
-  lmc1.setOutput("output1")
+  lmc1.setOutput("input2")
   lmc1.run();
 }
 
-
+//LMC 2
 function reset2(){
   let str = document.getElementById("code2").value;
   let code =(assemeble(str, false));

@@ -1,0 +1,47 @@
+LMC Documentation:
+
+Operation base: 10
+RAM: 10^2 locations (100)  0-99
+CPU and Ram: 3 digit Deneary 10^3  (0-999)
+
+Commands
+
+1xx Add   Add, and 2 digit adress (to the accumulator)
+2xx Sub   Subract, and 2 digit adress
+3xx Sta   Store, and 2 digit address
+
+4 Not used
+
+5xx Lda   Load from 2 digit adrress 
+6xx Bra   Branch, set programme counter to adress
+
+7xx brz   Branch to adress if the accumulator is 0
+8xx brp   Branch to adress if the accumulator is positive
+
+901 inp   Input(externaal) a number into the accumulator
+902 out   Output a number (exteranl)
+
+000 Hlt/cob  halt or coffee break (stop cpu)
+
+DAT - this is a assmber only instruction to store data in a memory location
+
+Labels can also be used  Ie   Loop could be the label for 
+    an adress and BRA Loop wood jumpt to the value of that adress.
+    The Label is given a numeric value by the assembler, and will be 
+    stored in the LMC memory as a 3 digit value.
+
+
+
+Additional instructions:
+
+Peter Higs Version adds:
+922 Otc  Output character - if the value in the accumulator can be mapped to 
+         to ASCII it is output as a character
+
+
+924 Vid  Outputs a section of to an LED array
+         Locations are 34 to 98  (64 locations)
+         if value is 0 LED is off, otherwise its on.
+
+--add method to make output easier
+

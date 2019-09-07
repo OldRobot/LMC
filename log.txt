@@ -5,3 +5,5 @@ if there is a empty line it will not compile the assembly code.
 4/11/18 290 it would be nice to add the cleaned 
             up text back into the text box.
 
+
+
